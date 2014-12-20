@@ -8,8 +8,8 @@ def constructSumUtil(arr, start, end, sum_array, sum_index):
   
   mid = getmid(start, end)
   #This operation can be abstracted
-  sum_array[sum_index] = constructSumUtil(arr, start, mid, sum_array, sum_index*2+1)+
-                          constructSumUtil(arr, mid+1, end, sum_array, sum_index*2+2)
+  sum_array[sum_index] = (constructSumUtil(arr, start, mid, sum_array, sum_index*2+1)+
+                          constructSumUtil(arr, mid+1, end, sum_array, sum_index*2+2))
   return sum_array[sum_index]
 
 def constructSum(arr):
@@ -26,29 +26,30 @@ def getsumutil(sum_array, start, end, qstart, qend, index):
   
   mid = getmid(start, end)
   #Operation which can be abstracted
-  return getsumutil(sum_array, start, mid, qstart, qend, 2*index+1)+
-          getsumutil(sum_array, mid+1, end, qstart, qend, 2*index+2)
+  left = getsumutil(sum_array, start, mid, qstart, qend, 2*index+1)
+  right = getsumutil(sum_array, mid+1, end, qstart, qend, 2*index+2)
+  return left+ right
 
 def getsum(sum_array, n, qstart, qend):
   if qstart<0 or qend>n-1 or qstart>qend:
     print "Invalid range"
     return -1
   
-  getsumutil(sum_array, 0, n-1, qstart, qend, 0)
+  return getsumutil(sum_array, 0, n-1, qstart, qend, 0)
 
 def updateutil(sum_array, start, end, diff, i, index):
   if i<start or i>end:
     return
   
   #Operation which can be abstracted
-  s[index] += diff
+  sum_array[index] += diff
   
   if start != end:
     mid = getmid(start,end)
     updateutil(sum_array, start, mid, diff, i, 2*index+1)
     updateutil(sum_array, mid+1, end, diff, i, 2*index+2)
 
-def update(arr, sum_array, i, new_val)
+def update(arr, sum_array, i, new_val):
   if i<0 or i>=len(arr):
     print "Invalid range"
     return
@@ -59,20 +60,41 @@ def update(arr, sum_array, i, new_val)
 
 def main():
   #This will be an interactive application
-  print "Enter the number of elements in the array"
-  n = len(raw_input())
-  
-  print "Enter the elements separated by spaces"
-  
+  print "Enter the number of elements in the array."
+  n = int(raw_input())
+  i = 0
+  print "Enter the elements separated by spaces. Press Enter after each input."
+  arr = []
+  while i<n:
+    num = int(raw_input())
+    arr.append(num)
+    i +=1
+
   print "Now, entering into loop"
   print "To exit, press q/Q"
   print "To query, press G <start range> <end range>"
   print "To update, press U <index> <new value>"
   
+  (myarr,s) = constructSum(arr)
+  
   exit = False
   while not exit:
     print "Enter the operation and index"
-    
+    inp = raw_input()
+    if str(inp) == 'q' or str(inp)=='Q':
+      exit = True
+    if inp[0]=='G':
+      ptw = map(int, inp[2:].split())
+      start = ptw[0]
+      end = ptw[1]
+      ans = getsum(s, len(myarr), start, end)
+      print ans
+      print "Sum in ["+str(start)+","+str(end)+"] is "+str(ans)
+    elif inp[0]=='U':
+      ptw = map(int, inp[2:].split())
+      index = ptw[0]
+      new_val = ptw[1]
+      update(myarr, s, index, new_val)
 
 # This is the standard boilerplate that calls the main() function.
 if __name__ == '__main__':
