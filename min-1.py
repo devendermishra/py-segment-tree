@@ -64,7 +64,6 @@ def update(arr, min_array, i, new_val):
     print "Invalid range"
     return
   #Operation which can be abstracted
-  diff = new_val - arr[i]
   arr[i] = new_val
   updateutil(min_array, 0, len(arr)-1, new_val, i, 0)
 
