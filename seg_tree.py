@@ -9,17 +9,31 @@ class SegmentTree:
   
   def constructutil(self, arr, start, end, result_array, result_index):
     if start == end:
+      print "result_index = "+str(result_index) + "  size of result_array = "+str(len(result_array))
       result_array[result_index]  = arr[start]
       return result_array[result_index]
     mid = getmid(start, end)
+    print "Mid = "+str(mid) + "Childs are "+str(2*result_index+1)+" and "+str(2*result_index+2)
     left_val = self.constructutil(arr, start, mid, result_array, 2*result_index+1)
     right_val = self.constructutil(arr, mid+1, end, result_array, 2*result_index+2)
+    print "result_index = "+str(result_index) + "  size of result_array = "+str(len(result_array))
     result_array[result_index]  = self.use_val(left_val, right_val)
     return result_array[result_index]
 
   def construct(self, arr):
     self.arr = arr
-    self.result_array = [0 for x in range(0,2*len(arr))]
+    #Get the size in the next higher power of 2
+    rlen = 0
+    slen = len(arr)
+    while slen>1:
+      rlen +=1
+      slen /=2
+    rlen += 2
+    slen = 1
+    while rlen>=0:
+      slen *= 2
+    
+    self.result_array = [0 for x in range(0,2*slen+1)]
     self.constructutil(arr, 0, len(arr)-1, self.result_array, 0)
 
   def getresultutil(self, start, end, qstart, qend, index):
