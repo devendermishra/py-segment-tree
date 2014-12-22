@@ -18,7 +18,8 @@ def constructMinUtil(arr, start, end, min_array, min_index):
   return min_array[min_index]
 
 def constructMin(arr):
-  min_array = [0 for x in range(0, 2*len(arr))]
+  from math import ceil, log
+  min_array = [0 for x in range(2*(pow(2, int(ceil(log(len(arr), 2))))) - 1)]
   constructMinUtil(arr, 0, len(arr)-1, min_array, 0)
   return (arr, min_array)
 

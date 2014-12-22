@@ -6,7 +6,7 @@ class SegmentTree:
     self.use_val = use_val
     self.update_val = update_val
     self.invalid_val = invalid_val
-  
+
   def constructutil(self, arr, start, end, result_array, result_index):
     if start == end:
       print "result_index = "+str(result_index) + "  size of result_array = "+str(len(result_array))
@@ -23,17 +23,12 @@ class SegmentTree:
   def construct(self, arr):
     self.arr = arr
     #Get the size in the next higher power of 2
-    rlen = 0
+    s = 1
     slen = len(arr)
-    while slen>1:
-      rlen +=1
-      slen /=2
-    rlen += 2
-    slen = 1
-    while rlen>=0:
-      slen *= 2
-    
-    self.result_array = [0 for x in range(0,2*slen+1)]
+    while s < slen:
+        s <<= 1
+
+    self.result_array = [0 for x in range(0,2*s+1)]
     self.constructutil(arr, 0, len(arr)-1, self.result_array, 0)
 
   def getresultutil(self, start, end, qstart, qend, index):
@@ -45,7 +40,7 @@ class SegmentTree:
     left = self.getresultutil(start, mid, qstart, qend, 2*index+1)
     right = self.getresultutil(mid+1, end, qstart, qend, 2*index+2)
     return self.use_val(left, right)
-  
+
   def getresult(self, qstart, qend):
     if qstart<0 or qend>len(self.arr)-1 or qstart>qend:
       return self.invalid_val
@@ -55,7 +50,7 @@ class SegmentTree:
   def updateutil(self, start, end, old_val, new_val, i, index):
     if i<start or i>end:
       return
-    
+
     self.update_val(self.result_array[index], old_val, new_val)
     if start !=end:
       mid = getmid(start, end)
@@ -70,7 +65,7 @@ class SegmentTree:
     old_val = self.arr[i]
     self.arr[i] = new_val
     self.updateutil(0, len(self.arr)-1, old_val, new_val, i, 0)
-    
+
 
 def main():
   return

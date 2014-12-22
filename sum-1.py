@@ -5,7 +5,7 @@ def constructSumUtil(arr, start, end, sum_array, sum_index):
   if start==end:
     sum_array[sum_index] = arr[start]
     return arr[start]
-  
+
   mid = getmid(start, end)
   #This operation can be abstracted
   sum_array[sum_index] = (constructSumUtil(arr, start, mid, sum_array, sum_index*2+1)+
@@ -13,17 +13,18 @@ def constructSumUtil(arr, start, end, sum_array, sum_index):
   return sum_array[sum_index]
 
 def constructSum(arr):
-  sum_array = [0 for x in range(0, 2*len(arr))]
+  from math import ceil, log
+  sum_array = [0 for x in range(2*(pow(2, int(ceil(log(len(arr), 2))))) - 1)]
   constructSumUtil(arr, 0, len(arr)-1, sum_array, 0)
   return (arr, sum_array)
 
 def getsumutil(sum_array, start, end, qstart, qend, index):
   if qstart<=start and qend>=end:
     return sum_array[index]
-  
+
   if end<qstart or start>qend:
     return 0
-  
+
   mid = getmid(start, end)
   #Operation which can be abstracted
   left = getsumutil(sum_array, start, mid, qstart, qend, 2*index+1)
@@ -34,16 +35,16 @@ def getsum(sum_array, n, qstart, qend):
   if qstart<0 or qend>n-1 or qstart>qend:
     print "Invalid range"
     return -1
-  
+
   return getsumutil(sum_array, 0, n-1, qstart, qend, 0)
 
 def updateutil(sum_array, start, end, diff, i, index):
   if i<start or i>end:
     return
-  
+
   #Operation which can be abstracted
   sum_array[index] += diff
-  
+
   if start != end:
     mid = getmid(start,end)
     updateutil(sum_array, start, mid, diff, i, 2*index+1)
@@ -74,9 +75,9 @@ def main():
   print "To exit, press q/Q"
   print "To query, press G <start range> <end range>"
   print "To update, press U <index> <new value>"
-  
+
   (myarr,s) = constructSum(arr)
-  
+
   exit = False
   while not exit:
     print "Enter the operation and index"
