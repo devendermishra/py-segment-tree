@@ -5,7 +5,7 @@ def constructMinUtil(arr, start, end, min_array, min_index):
   if start==end:
     min_array[min_index] = arr[start]
     return arr[start]
-  
+
   mid = getmid(start, end)
   #This operation can be abstracted
   left_min = constructMinUtil(arr, start, mid, min_array, min_index*2+1)
@@ -25,10 +25,10 @@ def constructMin(arr):
 def getminutil(min_array, start, end, qstart, qend, index):
   if qstart<=start and qend>=end:
     return min_array[index]
-  
+
   if end<qstart or start>qend:
-    return 100000000
-  
+    return float('inf')
+
   mid = getmid(start, end)
   #Operation which can be abstracted
   left = getminutil(min_array, start, mid, qstart, qend, 2*index+1)
@@ -37,23 +37,23 @@ def getminutil(min_array, start, end, qstart, qend, index):
     return left
   else:
     return right
-  return 10000000
+  return float('inf')
 
 def getmin(min_array, n, qstart, qend):
   if qstart<0 or qend>n-1 or qstart>qend:
     print "Invalid range"
     return -1
-  
+
   return getminutil(min_array, 0, n-1, qstart, qend, 0)
 
 def updateutil(min_array, start, end, new_val, i, index):
   if i<start or i>end:
     return
-  
+
   #Operation which can be abstracted
   if new_val<min_array[index]:
     min_array[index] = new_val
-  
+
   if start != end:
     mid = getmid(start,end)
     updateutil(min_array, start, mid, new_val, i, 2*index+1)
@@ -83,9 +83,9 @@ def main():
   print "To exit, press q/Q"
   print "To query, press G <start range> <end range>"
   print "To update, press U <index> <new value>"
-  
+
   (myarr,s) = constructMin(arr)
-  
+
   exit = False
   while not exit:
     print "Enter the operation and index"

@@ -27,10 +27,10 @@ def main():
   print "To exit, press q/Q"
   print "To query, press G <start range> <end range>"
   print "To update, press U <index> <new value>"
-  
-  segtree = seg_tree.SegmentTree(use_val, update_val, 10000000)
+
+  segtree = seg_tree.SegmentTree(use_val, update_val, float('inf'))
   segtree.construct(arr)
-  
+
   exit = False
   while not exit:
     print "Enter the operation and index"
